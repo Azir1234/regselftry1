@@ -5,6 +5,7 @@ import com.azir.common.R;
 import com.azir.common.ThreadLocalParam;
 import com.azir.entity.Employee;
 import com.azir.service.EmployeeService;
+import com.azir.utils.jwtUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -29,14 +30,14 @@ public class EmployeeController {
         Employee employee1= employeeService.selectByUsername(employee.getUsername());
         //设置ThreadLocal
         //ThreadLocalParam.set(employee1.getId());
-
-        session.setAttribute("employee",employee1);
+        String ids= employee1.getId().toString();
+        session.setAttribute("employeeId", jwtUtil.jwt(ids));
         return R.success("nothing");
     }
     @PostMapping("/logout")
     public R<String> loginOut(HttpSession session){
 
-        session.removeAttribute("employee");
+        session.removeAttribute("employeeId");
         return R.success("退出成功");
     }
 
@@ -58,8 +59,7 @@ public class EmployeeController {
         Employee employee1= (Employee) session.getAttribute("employee");
         employee.setCreateUser(employee1.getId());
         employee.setUpdateUser(employee1.getId());
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setCreateTime(LocalDateTime.now());
+
         employee.setStatus(1);
         employee.setPassword("Sjh12345678");
         System.out.println(employee);

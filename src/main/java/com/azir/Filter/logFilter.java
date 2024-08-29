@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.azir.common.R;
 import com.azir.common.ThreadLocalParam;
 import com.azir.entity.Employee;
+import com.azir.utils.jwtUtil;
 import org.springframework.util.AntPathMatcher;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -40,10 +41,12 @@ public class logFilter implements Filter {
             return;
         }
 
-        Employee employee;
+        String ids  = (String) request.getSession().getAttribute("employeeId");
+        System.out.println(ids);
         //4-1、判断登录状态，如果已登录，则直接放行
-        if( (employee= (Employee) request.getSession().getAttribute("employee"))!= null){
-            ThreadLocalParam.set(employee.getId());
+        if( ids!= null){
+            Long employeeId=  Long.valueOf( jwtUtil.jwtParse(ids));
+            ThreadLocalParam.set(employeeId);
             filterChain.doFilter(request,response);
             return;
         }
