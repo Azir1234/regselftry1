@@ -39,7 +39,7 @@ public class logFilter implements Filter {
         }
 
         //4-1、判断登录状态，如果已登录，则直接放行
-        if(request.getSession().getAttribute("yes") != null){
+        if(request.getSession().getAttribute("employee") != null){
             filterChain.doFilter(request,response);
             return;
         }

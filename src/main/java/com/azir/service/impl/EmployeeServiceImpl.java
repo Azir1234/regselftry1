@@ -8,6 +8,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+
 @Service
 public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> implements EmployeeService {
     @Autowired
@@ -17,7 +20,12 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         QueryWrapper<Employee> wrapper=new QueryWrapper<>();
         wrapper.eq("username",username);
         //查询数据
-      Employee employee= employeeMapper.selectOne(wrapper);
-      return employee;
+        Employee employee= employeeMapper.selectOne(wrapper);
+        return employee;
+    }
+
+    @Override
+    public void insertEmployee(Employee employee){
+
     }
 }
