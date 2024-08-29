@@ -2,6 +2,7 @@ package com.azir.controller;
 
 import com.alibaba.druid.util.StringUtils;
 import com.azir.common.R;
+import com.azir.common.ThreadLocalParam;
 import com.azir.entity.Employee;
 import com.azir.service.EmployeeService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -26,7 +27,9 @@ public class EmployeeController {
     public R<String> login(@RequestBody Employee employee, HttpSession session){
         //查询是否有一样的
         Employee employee1= employeeService.selectByUsername(employee.getUsername());
-        System.out.println(employee1);
+        //设置ThreadLocal
+        //ThreadLocalParam.set(employee1.getId());
+
         session.setAttribute("employee",employee1);
         return R.success("nothing");
     }
@@ -85,8 +88,8 @@ public class EmployeeController {
         Employee employee1= (Employee) session.getAttribute("employee");
 
 
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser(employee1.getId());
+//        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setUpdateUser(employee1.getId());
 
         employeeService.saveOrUpdate(employee);
         return R.success("修改员工成功");
