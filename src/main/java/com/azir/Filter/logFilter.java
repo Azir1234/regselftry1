@@ -42,7 +42,7 @@ public class logFilter implements Filter {
         }
 
         String ids  = (String) request.getSession().getAttribute("employeeId");
-        System.out.println(ids);
+
         //4-1、判断登录状态，如果已登录，则直接放行
         if( ids!= null){
             Long employeeId=  Long.valueOf( jwtUtil.jwtParse(ids));

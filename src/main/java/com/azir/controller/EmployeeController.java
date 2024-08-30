@@ -2,7 +2,7 @@ package com.azir.controller;
 
 import com.alibaba.druid.util.StringUtils;
 import com.azir.common.R;
-import com.azir.common.ThreadLocalParam;
+
 import com.azir.entity.Employee;
 import com.azir.service.EmployeeService;
 import com.azir.utils.jwtUtil;
@@ -10,12 +10,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
+
 
 @RestController
 @RequestMapping("/employee")
@@ -25,25 +25,27 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
     @PostMapping("/login")
-    public R<String> login(@RequestBody Employee employee, HttpSession session){
+    public R<Employee> login(@RequestBody Employee employee, HttpSession session){
         //查询是否有一样的
         Employee employee1= employeeService.selectByUsername(employee.getUsername());
-        //设置ThreadLocal
+        //设置ThreadLocal,没法用
         //ThreadLocalParam.set(employee1.getId());
         String ids= employee1.getId().toString();
         session.setAttribute("employeeId", jwtUtil.jwt(ids));
-        return R.success("nothing");
+
+        return R.success(employee1);
     }
     @PostMapping("/logout")
     public R<String> loginOut(HttpSession session){
 
         session.removeAttribute("employeeId");
+
         return R.success("退出成功");
     }
 
     @GetMapping("/page")
     public R<Page> pageSelect(Integer page, Integer pageSize,String name){
-       System.out.println(""+page+pageSize+name);
+
         //分页构造器
         Page pageInfo=new Page(page,pageSize);
         LambdaQueryWrapper<Employee> queryWrapper=new LambdaQueryWrapper();
@@ -86,11 +88,8 @@ public class EmployeeController {
     public R<String> changeEmployee( @RequestBody Employee employee,HttpSession session){
         System.out.println(employee);
         Employee employee1= (Employee) session.getAttribute("employee");
-
-
 //        employee.setUpdateTime(LocalDateTime.now());
 //        employee.setUpdateUser(employee1.getId());
-
         employeeService.saveOrUpdate(employee);
         return R.success("修改员工成功");
     }
