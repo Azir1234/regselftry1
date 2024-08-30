@@ -16,4 +16,8 @@ public class globalExceptionHandler {
         System.out.println(ex.getMessage());
         return R.error("失败了");
     }
+    @ExceptionHandler(ArrayIndexOutOfBoundsException.class)
+    public R<String> arrayexceptionHandler(ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException){
+        return R.error("数组越界");
+    }
 }

@@ -42,7 +42,7 @@ public class logFilter implements Filter {
         }
 
         String ids  = (String) request.getSession().getAttribute("employeeId");
-        System.out.println(ids);
+
         //4-1、判断登录状态，如果已登录，则直接放行
         if( ids!= null){
             Long employeeId=  Long.valueOf( jwtUtil.jwtParse(ids));
@@ -54,6 +54,7 @@ public class logFilter implements Filter {
         //5、如果未登录则返回未登录结果，通过输出流方式向客户端页面响应数据
         response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
         return;
+
     }
     public Boolean check(String []urls,String url){
         for (String s : urls) {
