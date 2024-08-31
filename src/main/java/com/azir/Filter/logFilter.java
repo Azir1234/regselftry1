@@ -29,7 +29,10 @@ public class logFilter implements Filter {
                 "/employee/login",
                 "/employee/logout",
                 "/backend/**",
-                "/front/**"
+                "/front/**",
+                "/common/**",
+                "/user/login",
+                "/user/sendMsg"
         };
 
         //2、判断本次请求是否需要处理
@@ -50,10 +53,17 @@ public class logFilter implements Filter {
             filterChain.doFilter(request,response);
             return;
         }
+        Long userId= (Long) request.getSession().getAttribute("user");
+        if( userId!=null){
 
+            ThreadLocalParam.set(userId);
+            filterChain.doFilter(request,response);
+            return;
+        }
         //5、如果未登录则返回未登录结果，通过输出流方式向客户端页面响应数据
         response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
         return;
+        //filterChain.doFilter(servletRequest,servletResponse);
 
     }
     public Boolean check(String []urls,String url){

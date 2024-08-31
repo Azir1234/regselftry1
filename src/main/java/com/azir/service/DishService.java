@@ -6,4 +6,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 public interface DishService extends IService<Dish> {
     void saveDishDto(DishDto dishDto);
+
+    void updateDishDto(DishDto dishDto);
+
+    DishDto getDishDto(Long id);
 }

@@ -45,6 +45,10 @@ public class CategoryController {
 
     @GetMapping("/list")
     public R<List<Category>> CategoryList(Integer type){
+        if(type==null){
+            List<Category> list = categoryService.list();
+            return R.success(list);
+        }
         QueryWrapper queryWrapper=new QueryWrapper();
         queryWrapper.eq("type",type);
        List<Category> list= categoryService.list(queryWrapper);

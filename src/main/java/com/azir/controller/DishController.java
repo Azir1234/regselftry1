@@ -12,6 +12,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/dish")
 public class DishController {
@@ -50,9 +52,6 @@ public class DishController {
     }
     @DeleteMapping
     public R<String> delete(Long...ids){
-        /*UpdateWrapper<Dish> updateWrapper=new UpdateWrapper<>();
-        updateWrapper.in("id",ids);*/
-
         QueryWrapper<Dish> queryWrapper=new QueryWrapper<>();
         queryWrapper.in("id",ids);
         dishService.remove(queryWrapper);
@@ -61,8 +60,27 @@ public class DishController {
 
     @PostMapping
     public R<String> dishAdd(@RequestBody DishDto dishDto){
-
         dishService.saveDishDto(dishDto);
         return R.success("保存成功");
+    }
+    @GetMapping("/list")
+    public R<List<Dish>> dishList(Long categoryId){
+        System.out.println(categoryId);
+        QueryWrapper queryWrapper=new QueryWrapper();
+        queryWrapper.eq("category_Id",categoryId);
+        List<Dish>list =dishService.list(queryWrapper);
+        return R.success(list);
+    }
+
+    @PutMapping
+    public R<String> dishUpdate(@RequestBody DishDto dishDto){
+        dishService.updateDishDto(dishDto);
+        return R.success("菜品修改成功");
+    }
+
+    @GetMapping("{id}")
+    public R<DishDto> dishDtoGet(@PathVariable Long id){
+        DishDto dishDto= dishService.getDishDto(id);
+        return R.success(dishDto);
     }
 }
