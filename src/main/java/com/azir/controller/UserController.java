@@ -6,10 +6,11 @@ import com.azir.service.ShoppingCartService;
 import com.azir.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-
+@Transactional
 @RestController
 @RequestMapping("/user")
 public class UserController {

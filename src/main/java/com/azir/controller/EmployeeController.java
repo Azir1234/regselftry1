@@ -12,20 +12,25 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-
+@Transactional
 
 @RestController
 @RequestMapping("/employee")
 
 public class EmployeeController {
 
+
     @Autowired
     private EmployeeService employeeService;
     @PostMapping("/login")
     public R<Employee> login(@RequestBody Employee employee, HttpSession session){
+
+
+
         //查询是否有一样的
         Employee employee1= employeeService.selectByUsername(employee.getUsername());
         //设置ThreadLocal,没法用
@@ -45,6 +50,8 @@ public class EmployeeController {
 
     @GetMapping("/page")
     public R<Page> pageSelect(Integer page, Integer pageSize,String name){
+
+
 
         //分页构造器
         Page pageInfo=new Page(page,pageSize);
@@ -76,17 +83,21 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     public R<Employee> updateEmployee(@PathVariable("id")Long id){
+
         System.out.println(id);
         QueryWrapper<Employee> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("id",id);
         Employee employee= employeeService.getOne(queryWrapper);
-        System.out.println(employee);
+
+
         return R.success(employee);
+
     }
 
     @PutMapping
     public R<String> changeEmployee( @RequestBody Employee employee,HttpSession session){
-        System.out.println(employee);
+
+
         Employee employee1= (Employee) session.getAttribute("employee");
 //        employee.setUpdateTime(LocalDateTime.now());
 //        employee.setUpdateUser(employee1.getId());

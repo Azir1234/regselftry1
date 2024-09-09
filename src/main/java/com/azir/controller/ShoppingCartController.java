@@ -5,11 +5,12 @@ import com.azir.entity.ShoppingCart;
 import com.azir.service.ShoppingCartService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-
+@Transactional
 @RestController
 @RequestMapping("/shoppingCart")
 public class ShoppingCartController {
